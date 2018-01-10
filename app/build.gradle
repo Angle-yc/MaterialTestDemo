@@ -1,6 +1,10 @@
+//Library工程必须加载此插件。注意，加载了Android插件就不要加载Java插件了。因为Android
+//插件本身就是拓展了Java插件
 apply plugin: 'com.android.application'
-
+//android的编译，增加了一种新类型的ScriptBlock-->android
 android {
+    //你看，我在local.properties中设置的API版本号，就可以一次设置，多个Project使用了
+    //借助我特意设计的gradle.ext.api属性
     compileSdkVersion 26
     buildToolsVersion "25.0.3"
     defaultConfig {
@@ -11,7 +15,12 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
+    sourceSets{ //配置源码路径。这个sourceSets是Java插件引入的
+        main{ //main：Android也用了
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+    signingConfigs {//设置签名信息配置
         config {
             storeFile file(KEY_PATH)
             storePassword KEY_PASS
@@ -29,7 +38,10 @@ android {
 
 }
 
-dependencies {
+dependencies {//配置依赖关系
+    //compile表示编译和运行时候需要的jar包，fileTree是一个函数，
+    //dir:'libs'，表示搜索目录的名称是libs。include:['*.jar']，表示搜索目录下满足*.jar名字的jar
+    //包都作为依赖jar文件
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

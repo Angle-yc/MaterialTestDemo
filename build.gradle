@@ -2,9 +2,14 @@
 
 buildscript {
     repositories {
+        ///jcenter是一个函数，表示编译过程中依赖的库，所需的插件可以在jcenter仓库中
+        //下载。
         jcenter()
     }
+
     dependencies {
+        //dependencies表示我们编译的时候，依赖android开发的gradle插件。插件对应的
+        //class path是com.android.tools.build。版本是2.3.2
         classpath 'com.android.tools.build:gradle:2.3.2'
 
         // NOTE: Do not place your application dependencies here; they belong
